@@ -6,7 +6,8 @@ class Enemy:
         self.attack_damage = attack_damage
         self.speed = speed
         self.path = []
-        self.sprite = sprite
+        self.sprite_type = sprite
+        self.sprite = (0, 0)
         self.coordinate = pos
 
     def get_sprite(self):
@@ -24,13 +25,27 @@ class Enemy:
         if self.coordinate[0] != self.path[2][self.path[1]][0]:
             if self.coordinate[0] < self.path[2][self.path[1]][0]:
                 self.coordinate = (self.coordinate[0] + self.speed, self.coordinate[1])
+                self.set_sprite("right")
             elif self.coordinate[0] > self.path[2][self.path[1]][0]:
                 self.coordinate = (self.coordinate[0] - self.speed, self.coordinate[1])
+                self.set_sprite("left")
         elif self.coordinate[1] != self.path[2][self.path[1]][1]:
             if self.coordinate[1] < self.path[2][self.path[1]][1]:
                 self.coordinate = (self.coordinate[0], self.coordinate[1] + self.speed)
+                self.set_sprite("down")
             elif self.coordinate[1] > self.path[2][self.path[1]][1]:
                 self.coordinate = (self.coordinate[0], self.coordinate[1] - self.speed)
+                self.set_sprite("up")
+
+    def set_sprite(self, side):
+        if side == "right":
+            self.sprite = (self.sprite_type[0], self.sprite_type[1]+8)
+        elif side == "left":
+            self.sprite = (self.sprite_type[0]+8, self.sprite_type[1]+8)
+        elif side == "up":
+            self.sprite = (self.sprite_type[0]+8, self.sprite_type[1])
+        else:
+            self.sprite = (self.sprite_type[0], self.sprite_type[1])
 
     def pos(self):
         return self.coordinate
