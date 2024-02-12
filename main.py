@@ -8,8 +8,8 @@ class App:
         pyxel.load("resources.pyxres") # load the resources file
 
         self.player = Player("Brise", 1, 100, (0, 0)) # Create a player object
-        self.ennemy = Enemy("Goblin", 1, 10, (0, 32), (16, 16)) # Create an enemy object
-        self.ennemy.set_path("linear", [(0, 0), (160, 120)]) # Set the path for the enemy
+        self.ennemy = Enemy("Slime", 1, 10, 0.5, (0, 32), (16, 16)) # Create an enemy object
+        self.ennemy.set_path("linear", [(32, 32), (16, 16)]) # Set the path for the enemy
         self.enemies = [self.ennemy] # Create a list of enemies
 
         pyxel.run(self.update, self.draw)  # Start the game loop
@@ -18,6 +18,9 @@ class App:
         if pyxel.btnp(pyxel.KEY_Q): # Press Q to quit the game
             pyxel.quit()
         self.player.move()
+        
+        for enemy in self.enemies:
+            enemy.move()
 
     def draw(self):
         pyxel.cls(0)  # Clear the screen with color index 0
