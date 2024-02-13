@@ -49,6 +49,9 @@ class Enemy:
 
     def pos(self):
         return self.coordinate
+    
+    def hitbox(self):
+        return (self.coordinate[0], self.coordinate[1], self.coordinate[0]+8, self.coordinate[1]+8)
 
     def take_damage(self, damage):
         self.health -= damage

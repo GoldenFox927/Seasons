@@ -1,26 +1,30 @@
 import pyxel
 from player import Player
 from enemy import Enemy
+import random as r
+
 
 class App:
     def __init__(self):
-        pyxel.init(270, 160)  # Set the window size
-        pyxel.load("resources.pyxres") # load the resources file
+        pyxel.init(192, 128)  # Set the window size
+        pyxel.load("resources.pyxres")  # load the resources file
 
-        self.player = Player("Brise", 1, 100, (0, 0)) # Create a player object
-        
+        self.player = Player("Brise", 1, 100, (0, 0))  # Create a player object
+
         self.enemies = []
-        
+
         self.game_state = "exloration"
-        
+
         for x in range(16):
             for y in range(16):
                 tile = self.get_tile(x, y)
-                print(tile)
                 if tile == (2, 4):
-                    self.enemies.append(Enemy("Slime", 1, 10, 0.5, (16, 32), (x*8, y*8)))
-                    print(f"Adding enemy at {x*8}, {y*8}")
-                    self.enemies[-1].set_path("linear", [(x*8, y*8), (x*8+16, y*8+16)])
+                    self.enemies.append(
+                        Enemy("Slime", 1, 10, 0.5, (16, 32), (x * 8, y * 8))
+                    )
+                    self.enemies[-1].set_path(
+                        "linear", [(x * 8, y * 8), (x * 8 + 16, y * 8 + 16)]
+                    )
                     pyxel.tilemap(0).pset(x, y, (2, 0))
 
         pyxel.run(self.update, self.draw)  # Start the game loop
@@ -28,20 +32,29 @@ class App:
     def get_tile(self, tile_x, tile_y):
         return pyxel.tilemap(0).pget(tile_x, tile_y)
 
+    def collision(self, enemy):
+        if (
+            self.player.hitbox()[0] < enemy.hitbox()[2]
+            and self.player.hitbox()[2] > enemy.hitbox()[0]
+            and self.player.hitbox()[1] < enemy.hitbox()[3]
+            and self.player.hitbox()[3] > enemy.hitbox()[1]
+        ):
+            self.game_state = "battle"
+
     def update(self):
-        if pyxel.btnp(pyxel.KEY_Q): # Press Q to quit the game
+        if pyxel.btnp(pyxel.KEY_Q):  # Press Q to quit the game
             pyxel.quit()
-            
-        if self.exploration:
+
+        if self.game_state == "exloration":
             self.player.move()
-        
+
             for enemy in self.enemies:
                 enemy.move()
+                self.collision(enemy)
 
-    def draw(self):
-        pyxel.cls(0)  # Clear the screen with color index 0
-        pyxel.bltm(0, 0, 0, 0, 0, 270, 160, 0)  # Draw the background
-        
+    def exploration_draw(self):
+        pyxel.bltm(0, 0, 0, 0, 0, 192, 128, 0)  # Draw the background
+
         # Draw the player
         pyxel.blt(
             self.player.pos()[0],
@@ -53,7 +66,7 @@ class App:
             8,
             2,
         )
-        
+
         # Draw the enemies
         for enemy in self.enemies:
             pyxel.blt(
@@ -67,6 +80,29 @@ class App:
                 2,
             )
 
+    def battle_draw(self):
+        pyxel.bltm(0, 0, 0, 1856, 1920, 192, 128, 0)  # Draw the background
+        
+        # Draw the player
+        pyxel.blt(
+            32,
+            26,
+            0,
+            0,
+            8,
+            8,
+            8,
+            2,
+        )
+
+    def draw(self):
+        pyxel.cls(0)  # Clear the screen with color index 0
+        
+        if self.game_state == "exloration":
+            self.exploration_draw()
+            
+        if self.game_state == "battle":
+            self.battle_draw()
 
 if __name__ == "__main__":
     App()
