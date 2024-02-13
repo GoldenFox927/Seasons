@@ -1,6 +1,6 @@
 import pyxel
-from player import Player
-from enemy import Enemy
+from entities.player import Player
+from entities.enemy import Enemy
 import random as r
 
 
