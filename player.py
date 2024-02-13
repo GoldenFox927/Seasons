@@ -7,7 +7,7 @@ class Player:
         self.level = level
         self.health = health
         self.coordinates = coordinates
-        self.sprite = (0, 16)
+        self.sprite = (8, 8)
 
     def is_traversable(self, x: int, y: int) -> bool:
         """Check if the player can move to the given coordinates
@@ -27,16 +27,16 @@ class Player:
         tile_ur = pyxel.tilemap(0).pget((x + 7) // 8, y // 8)
 
         up_left = (
-            tile_ul[0] >= 1 and tile_ul[0] <= 2 and tile_ul[1] >= 0 and tile_ul[1] <= 1
+            tile_ul[0] >= 2 and tile_ul[0] <= 3 and tile_ul[1] >= 0 and tile_ul[1] <= 1
         )  # Check if the tile is a traversable tile
         up_right = (
-            tile_ur[0] >= 1 and tile_ur[0] <= 2 and tile_ur[1] >= 0 and tile_ur[1] <= 1
+            tile_ur[0] >= 2 and tile_ur[0] <= 3 and tile_ur[1] >= 0 and tile_ur[1] <= 1
         )  # Check if the tile is a traversable tile
         bottom_left = (
-            tile_bl[0] >= 1 and tile_bl[0] <= 2 and tile_bl[1] >= 0 and tile_bl[1] <= 1
+            tile_bl[0] >= 2 and tile_bl[0] <= 3 and tile_bl[1] >= 0 and tile_bl[1] <= 1
         )  # Check if the tile is a traversable tile
         bottom_right = (
-            tile_br[0] >= 1 and tile_br[0] <= 2 and tile_br[1] >= 0 and tile_br[1] <= 1
+            tile_br[0] >= 2 and tile_br[0] <= 3 and tile_br[1] >= 0 and tile_br[1] <= 1
         )  # Check if the tile is a traversable tile
 
         # return True if all the corner are traversable
@@ -83,9 +83,9 @@ class Player:
         if side == "right":
             self.sprite = (0, 8)
         elif side == "left":
-            self.sprite = (0, 16)
+            self.sprite = (8, 0)
         elif side == "up":
-            self.sprite = (0, 24)
+            self.sprite = (8, 8)
         else:
             self.sprite = (0, 0)
 
