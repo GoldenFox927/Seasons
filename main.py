@@ -1,6 +1,7 @@
 import pyxel
 from entities.player import Player
 from entities.enemy import Enemy
+from game.battle import Battle
 import random as r
 
 
@@ -9,11 +10,13 @@ class App:
         pyxel.init(192, 128)  # Set the window size
         pyxel.load("resources.pyxres")  # load the resources file
 
-        self.player = Player("Brise", 1, 100, (0, 0))  # Create a player object
+        self.player = Player("Player", 1, 100, (0, 0))  # Create a player object
 
         self.enemies = []
 
         self.game_state = "exloration"
+        
+        self.battle = Battle(self.player, Enemy("Slime", 1, 10, 0.5, (16, 32)))
 
         for x in range(16):
             for y in range(16):
@@ -51,6 +54,9 @@ class App:
             for enemy in self.enemies:
                 enemy.move()
                 self.collision(enemy)
+                
+        if self.game_state == "battle":
+            self.battle.change_button()
 
     def exploration_draw(self):
         pyxel.bltm(0, 0, 0, 0, 0, 192, 128, 0)  # Draw the background
@@ -94,6 +100,10 @@ class App:
             8,
             2,
         )
+        
+        # Draw the buttons
+        for button in self.battle.buttons:
+            button.draw()
 
     def draw(self):
         pyxel.cls(0)  # Clear the screen with color index 0
