@@ -80,5 +80,3 @@ class Battle:
         if pyxel.btnp(pyxel.KEY_SPACE):
             if self.selected_button == 0:
                 self.enemy.take_damage(self.player.attack_damage)
-
-    # def start(self):

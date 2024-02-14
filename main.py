@@ -10,11 +10,11 @@ class App:
         pyxel.init(192, 128)  # Set the window size
         pyxel.load("resources.pyxres")  # load the resources file
 
-        self.player = Player("Player", 1, 75, (0, 0))  # Create a player object
+        self.player = Player("Player", 1, 100, (0, 0))  # Create a player object
 
         self.enemies = []
 
-        self.game_state = "exloration"
+        self.game_state = "exploration"
         
         self.battle = Battle(self.player, Enemy("Slime", 20, 10, 0.5, (24, 40)))
 
@@ -43,12 +43,13 @@ class App:
             and self.player.hitbox()[3] > enemy.hitbox()[1]
         ):
             self.game_state = "battle"
+            self.enemies.remove(enemy)
 
     def update(self):
         if pyxel.btnp(pyxel.KEY_Q):  # Press Q to quit the game
             pyxel.quit()
 
-        if self.game_state == "exloration":
+        if self.game_state == "exploration":
             self.player.move()
 
             for enemy in self.enemies:
@@ -89,7 +90,7 @@ class App:
     def draw(self):
         pyxel.cls(0)  # Clear the screen with color index 0
         
-        if self.game_state == "exloration":
+        if self.game_state == "exploration":
             self.exploration_draw()
             
         if self.game_state == "battle":
