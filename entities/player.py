@@ -5,6 +5,7 @@ class Player:
     def __init__(self, name, level, health, coordinates):
         self.name = name
         self.level = level
+        self.attack_damage = 10
         self.health = health
         self.coordinates = coordinates
         self.sprite = (8, 8)

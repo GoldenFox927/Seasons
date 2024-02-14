@@ -8,7 +8,6 @@ class Button:
         self.w = w
         self.icon = icon
         self.text = text
-        self.action = action
         self.is_selected = False
         
     def change_state(self):

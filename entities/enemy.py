@@ -3,11 +3,12 @@ class Enemy:
     def __init__(self, name, health, attack_damage, speed, sprite, pos=(0, 0)):
         self.name = name
         self.health = health
+        self.max_health = health
         self.attack_damage = attack_damage
         self.speed = speed
         self.path = []
         self.sprite_type = sprite
-        self.sprite = (0, 0)
+        self.sprite = sprite
         self.coordinate = pos
 
     def get_sprite(self):
