@@ -42,6 +42,7 @@ class App:
             and self.player.hitbox()[1] < enemy.hitbox()[3]
             and self.player.hitbox()[3] > enemy.hitbox()[1]
         ):
+            self.battle = Battle(self.player, Enemy("Slime", 20, 10, 0.5, (24, 40)))
             self.game_state = "battle"
             self.enemies.remove(enemy)
 

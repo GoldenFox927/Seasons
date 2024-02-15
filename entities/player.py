@@ -27,22 +27,22 @@ class Player:
         """
 
         # get the tile for all corner of the player
-        tile_ul = pyxel.tilemap(0).pget(x // 8, y // 8)
-        tile_bl = pyxel.tilemap(0).pget(x // 8, (y + 7) // 8)
-        tile_br = pyxel.tilemap(0).pget((x + 7) // 8, (y + 7) // 8)
-        tile_ur = pyxel.tilemap(0).pget((x + 7) // 8, y // 8)
+        tile_ul = pyxel.tilemap(0).pget((x + 1) // 8, (y + 1) // 8)
+        tile_bl = pyxel.tilemap(0).pget((x + 1) // 8, (y + 6) // 8)
+        tile_br = pyxel.tilemap(0).pget((x + 6) // 8, (y + 6) // 8)
+        tile_ur = pyxel.tilemap(0).pget((x + 6) // 8, (y + 1) // 8)
 
         up_left = (
-            tile_ul[0] >= 2 and tile_ul[0] <= 3 and tile_ul[1] >= 0 and tile_ul[1] <= 1
+            tile_ul[0] >= 2 and tile_ul[0] <= 10 and tile_ul[1] >= 0 and tile_ul[1] <= 1
         )  # Check if the tile is a traversable tile
         up_right = (
-            tile_ur[0] >= 2 and tile_ur[0] <= 3 and tile_ur[1] >= 0 and tile_ur[1] <= 1
+            tile_ur[0] >= 2 and tile_ur[0] <= 10 and tile_ur[1] >= 0 and tile_ur[1] <= 1
         )  # Check if the tile is a traversable tile
         bottom_left = (
-            tile_bl[0] >= 2 and tile_bl[0] <= 3 and tile_bl[1] >= 0 and tile_bl[1] <= 1
+            tile_bl[0] >= 2 and tile_bl[0] <= 10 and tile_bl[1] >= 0 and tile_bl[1] <= 1
         )  # Check if the tile is a traversable tile
         bottom_right = (
-            tile_br[0] >= 2 and tile_br[0] <= 3 and tile_br[1] >= 0 and tile_br[1] <= 1
+            tile_br[0] >= 2 and tile_br[0] <= 10 and tile_br[1] >= 0 and tile_br[1] <= 1
         )  # Check if the tile is a traversable tile
 
         # return True if all the corner are traversable
