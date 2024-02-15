@@ -11,6 +11,9 @@ class Enemy:
         self.sprite = sprite
         self.coordinate = pos
 
+    def __str__(self) -> str:
+        return f"{self.name} : {self.health}/{self.max_health}"
+
     def get_sprite(self):
         return self.sprite
 

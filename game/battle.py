@@ -16,6 +16,7 @@ class Battle:
         self.selected_button = 0
         self.selected_menu = 0
         self.actual_menu = "info"
+        self.phrase = "A new enemy has appeared!"
 
     def draw(self):
         pyxel.bltm(0, 0, 0, 1856, 1920, 192, 128, 0)  # Draw the background
@@ -101,17 +102,20 @@ class Battle:
             if self.selected_menu > len(self.player.capabilities["attack"]) - 1:
                 self.selected_menu = 0
         if pyxel.btnp(pyxel.KEY_SPACE):
-            self.enemy.health -= self.player.capabilities["attack"][self.selected_menu][1]
+            self.enemy.health -= self.player.capabilities["attack"][self.selected_menu][
+                1
+            ]
+            self.phrase = f"You attacked {self.enemy.name} with {self.player.str_attack(self.selected_menu)}!"
+            self.selected_menu = 0
             self.actual_menu = "info"
 
     def info_menu(self):
-        pyxel.text(
-            8, 74, f"{self.enemy.name} : {self.enemy.health}/{self.enemy.max_health}", 7
-        )
+        pyxel.text(8, 74, self.phrase, 7)
+        pyxel.text(8, 82, str(self.enemy), 7)
 
         pyxel.text(8, 96, "What will you do?", 7)
 
     def attack_menu(self):
-        pyxel.blt(8, 72+8*self.selected_menu, 0, 208, 224, 8, 8, 0)
+        pyxel.blt(8, 72 + 8 * self.selected_menu, 0, 208, 224, 8, 8, 0)
         for i in range(len(self.player.capabilities["attack"])):
-            pyxel.text(16, 74 + 8 * i, self.player.capabilities["attack"][i][0], 7)
+            pyxel.text(16, 74 + 8 * i, self.player.str_attack(i), 7)

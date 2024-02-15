@@ -93,6 +93,17 @@ class Player:
             self.coordinates[1] + 8,
         )
 
+    def str_attack(self, index: int) -> str:
+        """Get the attack capability of the player
+
+        Args:
+            index (int): the index of the capability
+
+        Returns:
+            str : the capability of the player
+        """
+        return f"{self.capabilities['attack'][index][0]} ({self.capabilities['attack'][index][1]} dammage)"
+
     def set_sprite(self, side: str):
         """Set the sprite of the player based on the direction of the movement
 
