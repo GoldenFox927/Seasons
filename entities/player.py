@@ -7,6 +7,7 @@ class Player:
         self.level = level
         self.attack_damage = 10
         self.health = health
+        self.max_health = health
         self.coordinates = coordinates
         self.sprite = (8, 8)
 

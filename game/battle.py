@@ -14,6 +14,7 @@ class Battle:
         ]
         self.buttons[0].change_state()
         self.selected_button = 0
+        self.actual_menu = "info"
 
     def draw(self):
         pyxel.bltm(0, 0, 0, 1856, 1920, 192, 128, 0)  # Draw the background
@@ -32,7 +33,7 @@ class Battle:
         # draw player life bar
         pyxel.rect(39, 19, 10, 3, 7)
         pyxel.rect(40, 20, 8, 1, 8)
-        pyxel.rect(40, 20, self.player.health * 8 / 100, 1, 11)
+        pyxel.rect(40, 20, self.player.health * 8 / self.player.max_health, 1, 11)
 
         # Draw the enemy
         pyxel.blt(
@@ -56,6 +57,10 @@ class Battle:
         # Draw the buttons
         for button in self.buttons:
             button.draw()
+            
+        # Draw the menu
+        if self.actual_menu == "info":
+            self.info_menu()
 
     def run(self):
         self.change_button()
@@ -80,3 +85,8 @@ class Battle:
         if pyxel.btnp(pyxel.KEY_SPACE):
             if self.selected_button == 0:
                 self.enemy.take_damage(self.player.attack_damage)
+
+    def info_menu(self):
+        pyxel.text(8, 74, f"{self.enemy.name} : {self.enemy.health}/{self.enemy.max_health}", 7)
+        
+        pyxel.text(8, 96, "What will you do?", 7)
