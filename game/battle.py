@@ -14,6 +14,7 @@ class Battle:
         ]
         self.buttons[0].change_state()
         self.selected_button = 0
+        self.selected_menu = 0
         self.actual_menu = "info"
 
     def draw(self):
@@ -50,21 +51,25 @@ class Battle:
         # draw enemy life bar
         pyxel.rect(127, 19, 10, 3, 7)
         pyxel.rect(128, 20, 8, 1, 8)
-        pyxel.rect(
-            128, 20, self.enemy.health * 8 / self.enemy.max_health, 1, 11
-        )
+        pyxel.rect(128, 20, self.enemy.health * 8 / self.enemy.max_health, 1, 11)
 
         # Draw the buttons
         for button in self.buttons:
             button.draw()
-            
+
         # Draw the menu
         if self.actual_menu == "info":
             self.info_menu()
+        elif self.actual_menu == "attack":
+            self.attack_menu()
 
     def run(self):
-        self.change_button()
-        self.button_click()
+        if self.actual_menu == "info":
+            self.change_button()
+            self.button_click()
+        elif self.actual_menu == "attack":
+            self.choose_attack()
+
         return "battle" if self.enemy.health > 0 else "exploration"
 
     def change_button(self):
@@ -84,9 +89,29 @@ class Battle:
     def button_click(self):
         if pyxel.btnp(pyxel.KEY_SPACE):
             if self.selected_button == 0:
-                self.enemy.take_damage(self.player.attack_damage)
+                self.actual_menu = "attack"
+
+    def choose_attack(self):
+        if pyxel.btnp(pyxel.KEY_UP):
+            self.selected_menu -= 1
+            if self.selected_menu < 0:
+                self.selected_menu = len(self.player.capabilities["attack"]) - 1
+        elif pyxel.btnp(pyxel.KEY_DOWN):
+            self.selected_menu += 1
+            if self.selected_menu > len(self.player.capabilities["attack"]) - 1:
+                self.selected_menu = 0
+        if pyxel.btnp(pyxel.KEY_SPACE):
+            self.enemy.health -= self.player.capabilities["attack"][self.selected_menu][1]
+            self.actual_menu = "info"
 
     def info_menu(self):
-        pyxel.text(8, 74, f"{self.enemy.name} : {self.enemy.health}/{self.enemy.max_health}", 7)
-        
+        pyxel.text(
+            8, 74, f"{self.enemy.name} : {self.enemy.health}/{self.enemy.max_health}", 7
+        )
+
         pyxel.text(8, 96, "What will you do?", 7)
+
+    def attack_menu(self):
+        pyxel.blt(8, 72+8*self.selected_menu, 0, 208, 224, 8, 8, 0)
+        for i in range(len(self.player.capabilities["attack"])):
+            pyxel.text(16, 74 + 8 * i, self.player.capabilities["attack"][i][0], 7)

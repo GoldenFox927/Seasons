@@ -10,6 +10,10 @@ class Player:
         self.max_health = health
         self.coordinates = coordinates
         self.sprite = (8, 8)
+        self.capabilities = {
+            "attack": [("slash", 10, None), ("stab", 5, None)],
+            "spell": [("sunray", 20, "burn")],
+        }
 
     def is_traversable(self, x: int, y: int) -> bool:
         """Check if the player can move to the given coordinates
@@ -75,14 +79,19 @@ class Player:
             tuple : the coordinates of the player
         """
         return self.coordinates
-    
+
     def hitbox(self) -> tuple:
         """Get the hitbox of the player
 
         Returns:
             tuple : the hitbox of the player
         """
-        return (self.coordinates[0], self.coordinates[1], self.coordinates[0]+8, self.coordinates[1]+8)
+        return (
+            self.coordinates[0],
+            self.coordinates[1],
+            self.coordinates[0] + 8,
+            self.coordinates[1] + 8,
+        )
 
     def set_sprite(self, side: str):
         """Set the sprite of the player based on the direction of the movement
