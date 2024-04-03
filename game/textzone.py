@@ -5,7 +5,6 @@ class TextZone:
         self.text = text.split(" ")
         count = 0
         while len(self.text) > count+1:
-            print(self.text)
             if len(self.text[count])*4 + len(self.text[count+1])*4 + 4 <= width:
                 self.text[count] = self.text[count] + " " + self.text.pop(count+1)
             else:

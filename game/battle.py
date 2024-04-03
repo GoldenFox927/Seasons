@@ -20,7 +20,8 @@ class Battle:
         self.turn = "player"
 
     def draw(self):
-        pyxel.bltm(0, 0, 0, 1856, 1920, 192, 128, 0)  # Draw the background
+        pyxel.bltm(0, 0, 0, 1856, 1920, 192, 128)  # Draw the background
+        pyxel.bltm(0, 64, 0, 1664, 1984, 192, 50, 8)  # Draw the background
 
         # Draw the player
         pyxel.blt(
