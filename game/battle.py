@@ -17,6 +17,7 @@ class Battle:
         self.selected_menu = 0
         self.actual_menu = "info"
         self.phrase = "A new enemy has appeared!"
+        self.turn = "player"
 
     def draw(self):
         pyxel.bltm(0, 0, 0, 1856, 1920, 192, 128, 0)  # Draw the background
@@ -42,8 +43,8 @@ class Battle:
             128,
             26,
             0,
-            self.enemy.get_sprite()[0],
-            self.enemy.get_sprite()[1],
+            self.enemy.get_sprite_type()[0] + 8,
+            self.enemy.get_sprite_type()[1] + 8,
             8,
             8,
             2,
@@ -64,14 +65,30 @@ class Battle:
         elif self.actual_menu == "attack":
             self.attack_menu()
 
-    def run(self):
+    def player_turn(self):
         if self.actual_menu == "info":
             self.change_button()
             self.button_click()
         elif self.actual_menu == "attack":
             self.choose_attack()
+            self.use_attack()
 
-        return "battle" if self.enemy.health > 0 else "exploration"
+    def enemy_turn(self):
+        self.player.take_damage(self.enemy.attack())
+        self.turn = "player"
+
+    def run(self):
+        if self.turn == "player":
+            self.player_turn()
+        elif self.turn == "enemy":
+            self.enemy_turn()
+
+        if not self.player.is_alive():
+            return "game_over"
+        elif not self.enemy.is_alive():
+            return "exploration"
+        else:
+            return "battle"
 
     def change_button(self):
         if pyxel.btnp(pyxel.KEY_LEFT):
@@ -101,6 +118,8 @@ class Battle:
             self.selected_menu += 1
             if self.selected_menu > len(self.player.capabilities["attack"]) - 1:
                 self.selected_menu = 0
+
+    def use_attack(self):
         if pyxel.btnp(pyxel.KEY_SPACE):
             self.enemy.health -= self.player.capabilities["attack"][self.selected_menu][
                 1
@@ -108,6 +127,7 @@ class Battle:
             self.phrase = f"You attacked {self.enemy.name} with {self.player.str_attack(self.selected_menu)}!"
             self.selected_menu = 0
             self.actual_menu = "info"
+            self.turn = "enemy"
 
     def info_menu(self):
         pyxel.text(8, 74, self.phrase, 7)

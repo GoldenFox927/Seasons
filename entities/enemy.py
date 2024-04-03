@@ -1,6 +1,7 @@
 import pyxel
 class Enemy:
     def __init__(self, name, health, attack_damage, speed, sprite, pos=(0, 0)):
+        print(attack_damage)
         self.name = name
         self.health = health
         self.max_health = health
@@ -16,6 +17,9 @@ class Enemy:
 
     def get_sprite(self):
         return self.sprite
+    
+    def get_sprite_type(self):
+        return self.sprite_type
 
     def set_path(self, type, path):
         self.path = [type, 0, path]

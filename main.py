@@ -2,6 +2,7 @@ import pyxel
 from entities.player import Player
 from entities.enemy import Enemy
 from game.battle import Battle
+from game.textzone import TextZone
 import random as r
 
 
@@ -15,15 +16,15 @@ class App:
         self.enemies = []
 
         self.game_state = "exploration"
-        
-        self.battle = Battle(self.player, Enemy("Slime", 20, 10, 0.5, (24, 40)))
+
+        self.battle = Battle(self.player, Enemy("Bugz", 20, 10, 0.5, (24, 40)))
 
         for x in range(16):
             for y in range(16):
                 tile = self.get_tile(x, y)
                 if tile == (2, 4):
                     self.enemies.append(
-                        Enemy("Slime", 1, 10, 0.5, (16, 32), (x * 8, y * 8))
+                        Enemy("Slime", 20, 10, 0.5, (16, 32), (x * 8, y * 8))
                     )
                     self.enemies[-1].set_path(
                         "linear", [(x * 8, y * 8), (x * 8 + 16, y * 8 + 16)]
@@ -42,7 +43,7 @@ class App:
             and self.player.hitbox()[1] < enemy.hitbox()[3]
             and self.player.hitbox()[3] > enemy.hitbox()[1]
         ):
-            self.battle = Battle(self.player, Enemy("Slime", 20, 10, 0.5, (24, 40)))
+            self.battle = Battle(self.player, enemy)
             self.game_state = "battle"
             self.enemies.remove(enemy)
 
@@ -56,7 +57,7 @@ class App:
             for enemy in self.enemies:
                 enemy.move()
                 self.collision(enemy)
-                
+
         if self.game_state == "battle":
             self.game_state = self.battle.run()
 
@@ -90,12 +91,13 @@ class App:
 
     def draw(self):
         pyxel.cls(0)  # Clear the screen with color index 0
-        
+
         if self.game_state == "exploration":
             self.exploration_draw()
-            
+
         if self.game_state == "battle":
             self.battle.draw()
+
 
 if __name__ == "__main__":
     App()
