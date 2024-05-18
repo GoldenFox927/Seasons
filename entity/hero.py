@@ -1,8 +1,9 @@
 import pygame
 
 
-class Hero:
-    def __init__(self, name, health, mana, position=(0, 0)):
+class Hero(pygame.sprite.Sprite):
+    def __init__(self, name, health, mana, position=[0, 0]):
+        super().__init__()
         self.name = name
         self.health = health
         self.mana = mana
@@ -12,38 +13,32 @@ class Hero:
         self.orientation = "right"
         self.position = pygame.Vector2(position[0], position[1])  # Initial position
 
-        # Load the sprite
-        sprite_sheet = pygame.image.load(
+        # Load the spritesheet
+        self.sprite_sheet = pygame.image.load(
             "assets\playerSprites_ [version 1.0]\mPlayer_ [elf].png"
         )
 
-        # Define the rectangle for the area of the sprite sheet you want
-        sprite_rect = pygame.Rect(
-            32, 32, 32, 32
-        )  # Change these values to the area you want
-
         # Get the sprite from the sprite sheet
-        self.sprite = sprite_sheet.subsurface(sprite_rect)
+        self.image = self.get_image(0, 5)
+        self.image.set_colorkey((0, 0, 0))
+        self.rect = self.image.get_rect()
 
-        # Scale the sprite
-        self.sprite = pygame.transform.scale(self.sprite, (64, 64))
+    def get_image(self, x, y):
+        image = pygame.Surface((12, 21))
+        image.blit(self.sprite_sheet, (0, 0), (x*32+10, y*32+7, 12, 22))
+        return image
+
+    def update(self):
+        self.move()
+        self.rect.topleft = self.position
 
     def move(self):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT]:
             self.position[0] -= self.speed
-            if self.orientation == "right":
-                self.orientation = "left"
-                self.sprite = pygame.transform.flip(self.sprite, True, False)
         if keys[pygame.K_RIGHT]:
             self.position[0] += self.speed
-            if self.orientation == "left":
-                self.orientation = "right"
-                self.sprite = pygame.transform.flip(self.sprite, True, False)
         if keys[pygame.K_UP]:
             self.position[1] -= self.speed
         if keys[pygame.K_DOWN]:
             self.position[1] += self.speed
-
-    def draw(self, window):
-        window.blit(self.sprite, self.position)
