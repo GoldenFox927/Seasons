@@ -14,7 +14,7 @@ class Game:
         height = 900
         self.window = pygame.display.set_mode((width, height))
 
-        tmx_data = load_pygame("test.tmx")
+        tmx_data = load_pygame("assets/maps/test.tmx")
         map_data = pyscroll.data.TiledMapData(tmx_data)
         map_layer = pyscroll.orthographic.BufferedRenderer(map_data, (width, height))
         

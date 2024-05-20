@@ -15,17 +15,18 @@ class Hero(pygame.sprite.Sprite):
 
         # Load the spritesheet
         self.sprite_sheet = pygame.image.load(
-            "assets\playerSprites_ [version 1.0]\mPlayer_ [elf].png"
+            "assets/graphism/playerSprites_\mPlayer_ [elf].png"
         )
 
         # Get the sprite from the sprite sheet
         self.image = self.get_image(0, 5)
-        self.image.set_colorkey((0, 0, 0))
         self.rect = self.image.get_rect()
 
-    def get_image(self, x, y):
+    def get_image(self, x, y, reverse=False):
         image = pygame.Surface((12, 21))
         image.blit(self.sprite_sheet, (0, 0), (x*32+10, y*32+7, 12, 22))
+        image = pygame.transform.flip(image, reverse, False)
+        image.set_colorkey((0, 0, 0))
         return image
 
     def update(self):
@@ -36,8 +37,10 @@ class Hero(pygame.sprite.Sprite):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT]:
             self.position[0] -= self.speed
+            self.image = self.get_image(0, 5, True)
         if keys[pygame.K_RIGHT]:
             self.position[0] += self.speed
+            self.image = self.get_image(0, 5)
         if keys[pygame.K_UP]:
             self.position[1] -= self.speed
         if keys[pygame.K_DOWN]:
